@@ -1,0 +1,9 @@
+{
+    "dependencies": {
+        "@comark/nuxt": "^0.4.0",
+        "shiki": "^4.2.0"
+    },
+    "devDependencies": {
+        "sass-embedded": "^1.104.0"
+    }
+}
