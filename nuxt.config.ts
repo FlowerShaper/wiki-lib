@@ -1,6 +1,9 @@
 import { fileURLToPath } from 'node:url';
 
 export default defineNuxtConfig({
+    alias: {
+        '~~': fileURLToPath(new URL('../', import.meta.url)),
+    },
     modules: ['@comark/nuxt'],
     imports: {
         dirs: ['models', 'models/**'],
