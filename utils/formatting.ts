@@ -16,7 +16,7 @@ export default class Formatting {
     }
 
     static FormatAgo(secs: number): string {
-        const formatted = Formatting.FormatDuration(Date.now() / 1000 - secs);
+        const formatted = formatting.FormatDuration(Date.now() / 1000 - secs);
 
         if (formatted !== 'just now') return formatted + ' ago';
 

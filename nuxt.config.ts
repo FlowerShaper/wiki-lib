@@ -4,6 +4,7 @@ export default defineNuxtConfig({
     alias: {
         '~~': fileURLToPath(new URL('../', import.meta.url)),
     },
+    css: [fileURLToPath(new URL('./assets/css/main.css', import.meta.url))],
     modules: ['@comark/nuxt'],
     imports: {
         dirs: ['models', 'models/**'],
@@ -18,7 +19,7 @@ export default defineNuxtConfig({
     },
     typescript: {
         tsConfig: {
-            include: ['./models/**/*.ts'],
+            include: ['./models/**/*.ts', './models/**/*.d.ts'],
         },
     },
 });

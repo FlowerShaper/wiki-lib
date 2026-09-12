@@ -6,7 +6,7 @@ defineProps<{
 </script>
 
 <template>
-    <div class="relative overflow-x-auto bg-2 rounded-xl flex flex-col">
+    <div class="relative overflow-x-auto bg-background-2 rounded-xl flex flex-col">
         <div v-if="filename">
             {{ filename }}
         </div>

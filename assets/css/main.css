@@ -1,0 +1,39 @@
+@reference 'tailwindcss';
+@reference '@nuxt/ui';
+
+@source '../../components/';
+@source './include.txt';
+
+.md-content {
+    @apply flex flex-col gap-3 max-w-full;
+}
+
+.md-content a {
+    @apply text-primary hover:underline;
+}
+
+.md-content h4 {
+    @apply text-xl;
+}
+
+.md-content > p {
+    @apply text-lg;
+}
+
+.md-content ul,
+.md-content ol {
+    @apply list-inside list-disc;
+}
+
+.md-content ul > li,
+.md-content ol > li {
+    @apply text-lg;
+}
+
+.md-content ol {
+    @apply list-decimal;
+}
+
+.md-content mark {
+    @apply bg-primary px-1.5 py-0.5 rounded;
+}

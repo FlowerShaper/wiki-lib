@@ -1,0 +1,5 @@
+border-bq-note
+border-bq-tip
+border-bq-important
+border-bq-warning
+border-bq-caution

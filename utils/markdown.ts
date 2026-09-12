@@ -1,8 +1,3 @@
-import ParsedMarkdown from "@/models/markdown/ParsedMarkdown";
-import ParsedSection from "@/models/markdown/ParsedSection";
-import ParsedSubSection from "@/models/markdown/ParsedSubSection";
-import API from "./api";
-
 export default class Markdown {
     static FootnoteRegex = /\[\^(\d{1,2})\]/g;
     static BlockquoteRegex = /\{: \.(\w+) \}/g;
@@ -10,25 +5,25 @@ export default class Markdown {
     static Parse(md: string): ParsedMarkdown {
         const data = new ParsedMarkdown(md);
 
-        data.raw.split("\n").forEach((line) => {
-            if (line.startsWith("## ")) {
+        data.raw.split('\n').forEach((line: string) => {
+            if (line.startsWith('## ')) {
                 const text = line.slice(3);
                 const id = line
                     .slice(3)
                     .toLowerCase()
                     .trim()
-                    .replace(/[^\w]+/g, "-");
+                    .replace(/[^\w]+/g, '-');
                 data.sections.push(new ParsedSection(text, id));
             }
 
-            if (line.startsWith("### ")) {
+            if (line.startsWith('### ')) {
                 const last = data.sections[data.sections.length - 1];
                 const text = line.slice(4);
                 const id = line
                     .slice(4)
                     .toLowerCase()
                     .trim()
-                    .replace(/[^\w]+/g, "-");
+                    .replace(/[^\w]+/g, '-');
                 last.subs.push(new ParsedSubSection(text, id));
             }
         });
