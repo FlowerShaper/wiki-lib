@@ -1,10 +1,4 @@
-import type ParsedSection from "./ParsedSection"
+import type { Toc } from '@comark/nuxt/plugins/toc';
+import type { MarkdownDocument } from 'comark';
 
-export default class ParsedMarkdown {
-    sections: ParsedSection[] = []
-    raw: string
-
-    constructor(raw: string) {
-        this.raw = raw
-    }
-}
+export type ParsedMarkdown = MarkdownDocument<{ toc: Toc } & Record<string, unknown>, Record<string, any>>;
