@@ -29,6 +29,14 @@ export default class Formatting {
         return months[num - 1];
     }
 
+    static Date(secs: number, loc: string = 'en-GB'): string {
+        return new Date(secs * 1000).toLocaleDateString(loc, {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+        });
+    }
+
     static Order(num: number) {
         const suffixes = ['th', 'st', 'nd', 'rd'];
         const v = num % 100;
