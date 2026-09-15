@@ -21,24 +21,24 @@ export default class API {
         });
     }
 
-    static async PerformGet<T, E = Error>(endpoint: string): Promise<Result<T, E>> {
-        return tryPerform<T, E>(endpoint, 'GET');
+    static async PerformGet<T, E = Error>(endpoint: string, url: string = this.APIUrl): Promise<Result<T, E>> {
+        return tryPerform<T, E>(endpoint, 'GET', {}, url);
     }
 
-    static async PerformPost<T, E = Error>(endpoint: string, body: any): Promise<Result<T, E>> {
-        return tryPerform<T, E>(endpoint, 'POST', body);
+    static async PerformPost<T, E = Error>(endpoint: string, body: any, url: string = this.APIUrl): Promise<Result<T, E>> {
+        return tryPerform<T, E>(endpoint, 'POST', body, url);
     }
 
-    static async PerformPatch<T, E = Error>(endpoint: string, body: any): Promise<Result<T, E>> {
-        return tryPerform<T, E>(endpoint, 'PATCH', body);
+    static async PerformPatch<T, E = Error>(endpoint: string, body: any, url: string = this.APIUrl): Promise<Result<T, E>> {
+        return tryPerform<T, E>(endpoint, 'PATCH', body, url);
     }
 
-    static async PerformPut<T, E = Error>(endpoint: string, body: any = {}): Promise<Result<T, E>> {
-        return tryPerform<T, E>(endpoint, 'PUT', body);
+    static async PerformPut<T, E = Error>(endpoint: string, body: any = {}, url: string = this.APIUrl): Promise<Result<T, E>> {
+        return tryPerform<T, E>(endpoint, 'PUT', body, url);
     }
 
-    static async PerformDelete<T, E = Error>(endpoint: string, body: any = {}): Promise<Result<T, E>> {
-        return tryPerform<T, E>(endpoint, 'DELETE', body);
+    static async PerformDelete<T, E = Error>(endpoint: string, body: any = {}, url: string = this.APIUrl): Promise<Result<T, E>> {
+        return tryPerform<T, E>(endpoint, 'DELETE', body, url);
     }
 
     static OpenLogin() {
@@ -90,9 +90,9 @@ export default class API {
         return path.replace(/\//gi, '-').toLowerCase();
     }
 
-    static ResolveAsset(url: string): string {
+    static ResolveAsset(url: string, base: string = this.CDNUrl): string {
         if (url.startsWith('cdn://')) {
-            return `${this.CDNUrl}/${url.substring(6)}`;
+            return `${base}/${url.substring(6)}`;
         }
 
         return url;
@@ -115,9 +115,9 @@ export default class API {
     }
 }
 
-async function tryPerform<T, E = Error>(endpoint: string, method: string, body: any = {}): Promise<Result<T, E>> {
+async function tryPerform<T, E = Error>(endpoint: string, method: string, body: any = {}, url: string): Promise<Result<T, E>> {
     try {
-        const res = await perform<T>(endpoint, method, body);
+        const res = await perform<T>(endpoint, method, body, url);
 
         if (!res.IsSuccess() || !res.data) throw new APIError(res);
 
@@ -126,13 +126,13 @@ async function tryPerform<T, E = Error>(endpoint: string, method: string, body: 
         return { data: null, error: ex as E };
     }
 }
-async function perform<T>(endpoint: string, method: string, body: any = {}): Promise<APIResponse<T>> {
+async function perform<T>(endpoint: string, method: string, body: any = {}, url: string): Promise<APIResponse<T>> {
     const rsp = new APIResponse<T>();
 
     try {
         var opt = {
-            baseURL: API.APIUrl,
-            headers: createHeaders(),
+            baseURL: url,
+            headers: createHeaders(url),
             body: undefined,
             method: method as any, // ts can be really stupid sometimes
         };
@@ -158,13 +158,13 @@ async function perform<T>(endpoint: string, method: string, body: any = {}): Pro
     return rsp;
 }
 
-function createHeaders(): any {
+function createHeaders(url: string): any {
     const headers: any = {
         'Content-Type': 'application/json',
         Accept: 'application/json',
     };
 
-    if (API.TokenCookie.value) {
+    if (API.TokenCookie.value && url == api.APIUrl) {
         headers.Authorization = API.TokenCookie.value;
     }
 
