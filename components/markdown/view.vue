@@ -5,10 +5,14 @@ const props = defineProps<{
     content: string;
 }>();
 
-const parsed = await Markdown.Parse(props.content);
-defineExpose({ parsed });
+const { data } = useAsyncData<ParsedMarkdown>(
+    () => 'markdown-content',
+    async () => await Markdown.Parse(props.content),
+    { watch: [() => props.content] },
+);
+defineExpose({ data });
 </script>
 
 <template>
-    <MarkdownDocument class="md-content" :value="parsed" :components="Markdown.Components"></MarkdownDocument>
+    <MarkdownDocument class="md-content" :value="data" :components="Markdown.Components"></MarkdownDocument>
 </template>
