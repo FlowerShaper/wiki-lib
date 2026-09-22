@@ -1,4 +1,5 @@
 export type RawDiscogFile = {
+    id?: string;
     title: string;
     title_romanized: string;
     content?: string;
